@@ -1,10 +1,11 @@
 package com.example.springcourse.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 public class Publisher {
@@ -17,7 +18,12 @@ public class Publisher {
     private String state;
     private String zip;
 
+    @OneToMany
+    @JoinColumn(name = "publisher_id")
+    private Set<Book> books;
+
     public Publisher() {
+        this.books = new HashSet<>();
     }
 
     public Publisher(String name, String line1, String city, String state, String zip) {
@@ -26,6 +32,7 @@ public class Publisher {
         this.city = city;
         this.state = state;
         this.zip = zip;
+        this.books = new HashSet<>();
     }
 
     public Long getId() {
@@ -74,6 +81,14 @@ public class Publisher {
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public Set<Book> getBooks() {
+        return this.books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     @Override
