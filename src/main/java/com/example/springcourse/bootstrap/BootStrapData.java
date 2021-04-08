@@ -28,32 +28,46 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Publisher publisher = new Publisher("foo", "12th Street", "LA", "CA", "42900");
+        publisherRepository.save(publisher);
+
         Author herman = new Author("Herman", "Hesse");
         Set<Author> authors = new HashSet<>();
         authors.add(herman);
         Book siddartha = new Book("Siddartha", "1", authors);
+        siddartha.setPublisher(publisher);
         Set<Book> books = new HashSet<>();
         books.add(siddartha);
         herman.setBooks(books);
+//        Set<Book> publisherBooks = publisher.getBooks();
+//        publisherBooks.add(siddartha);
+//        publisher.setBooks(publisherBooks);
+        publisher.getBooks().add(siddartha);
 
         authorRepository.save(herman);
         bookRepository.save(siddartha);
+        publisherRepository.save(publisher);
 
         Author johnGreen = new Author("John", "Green");
         authors = new HashSet<>();
         authors.add(johnGreen);
         Book okayOkay = new Book("The Fault in our start", "2", authors);
         books = new HashSet<>();
+        okayOkay.setPublisher(publisher);
         books.add(okayOkay);
         johnGreen.setBooks(books);
+        publisher.getBooks().add(okayOkay);
+//        publisherBooks = publisher.getBooks();
+//        publisherBooks.add(okayOkay);
+//        publisher.setBooks(publisherBooks);
 
         authorRepository.save(johnGreen);
         bookRepository.save(okayOkay);
+        publisherRepository.save(publisher);
+
         System.out.println("Started in bootstrap");
         System.out.println("Number of books: " + bookRepository.count());
-
-        Publisher publisher = new Publisher("foo", "12th Street", "LA", "CA", "42900");
-        publisherRepository.save(publisher);
         System.out.println("Number of publishers: " + publisherRepository.count());
+        System.out.println("Number of publisher's books: " + publisher.getBooks().size());
     }
 }
